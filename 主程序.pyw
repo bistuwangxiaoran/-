@@ -136,7 +136,7 @@ sh = win.winfo_screenheight()
 ww, wh = 400, 450
 x, y = (sw-ww)/2, (sh-wh)/2
 win.geometry("%dx%d+%d+%d"%(ww, wh, x, y-40)) # 居中放置窗口
-win.title('手写体识别') # 窗口命名
+win.title('手写体数字识别') # 窗口命名
 
 img= Image.open("example.png").resize((100, 100))
 bg= ImageTk.PhotoImage(img)
