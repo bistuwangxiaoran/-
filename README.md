@@ -6,3 +6,5 @@ model文件夹生成
 ![image](./图片/2.png)  
 MNIST_data文件夹内容  
 ![image](./图片/3.png)  
+来自  
+http://yann.lecun.com/exdb/mnist/
