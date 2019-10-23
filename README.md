@@ -14,4 +14,5 @@ model文件夹内容
 主程序成功运行效果（准确率低）（warning问题待解决）  
 ![image](./图片/6.png)  
 python安装：http://c.biancheng.net/view/4161.html  
-模块安装：pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xxxxx（cmd指令行）
+模块安装：pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xxxxx（cmd指令行）（镜像网站加速）
+其中功能代码来自：https://www.cnblogs.com/qiuhlee/p/9866222.html()
