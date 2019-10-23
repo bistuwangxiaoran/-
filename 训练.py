@@ -1,17 +1,20 @@
 import tensorflow as tf
-from tensorflow.examples.tutorials.mnist import input_data
+import input_data
 
-mnist = input_data.read_data_sets("MNIST_data", one_hot=True)
+mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 
 # 为输入图像和目标输出类别创建节点
-x = tf.placeholder(tf.float32, shape=[None, 784]) # 训练所需数据  占位符
-y_ = tf.placeholder(tf.float32, shape=[None, 10]) # 训练所需标签数据  占位符
+
+tf.compat.v1.disable_eager_execution()
+x = tf.compat.v1.placeholder(tf.float32, shape=[None, 784]) # 训练所需数据  占位符
+y_ = tf.compat.v1.placeholder(tf.float32, shape=[None, 10]) # 训练所需标签数据  占位符
+
 
 # *************** 构建多层卷积网络 *************** #
 
 # 权重、偏置、卷积及池化操作初始化,以避免在建立模型的时候反复做初始化操作
 def weight_variable(shape):
-  initial = tf.truncated_normal(shape, stddev=0.1) # 取随机值，符合均值为0，标准差stddev为0.1
+  initial = tf.random.truncated_normal(shape, stddev=0.1) # 取随机值，符合均值为0，标准差stddev为0.1
   return tf.Variable(initial)
 
 def bias_variable(shape):
@@ -27,7 +30,7 @@ def conv2d(x, W):
 
 # x 参数的格式同tf.nn.conv2d中的x，ksize为池化层过滤器的尺度，strides为过滤器步长
 def max_pool_2x2(x):
-  return tf.nn.max_pool(x, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
+  return tf.nn.max_pool2d(x, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
 
 #把x更改为4维张量，第1维代表样本数量，第2维和第3维代表图像长宽， 第4维代表图像通道数  
 x_image = tf.reshape(x, [-1,28,28,1]) # -1表示任意数量的样本数,大小为28x28，深度为1的张量
@@ -58,8 +61,8 @@ h_pool2_flat = tf.reshape(h_pool2, [-1, 7*7*64])
 h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
 
 # 在输出层之前加入dropout以减少过拟合
-keep_prob = tf.placeholder("float")
-h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
+keep_prob = tf.compat.v1.placeholder("float")
+h_fc1_drop = tf.nn.dropout(h_fc1, rate = 1 - keep_prob)
 
 # 第六层：全连接层
 W_fc2 = weight_variable([1024, 10])
@@ -71,10 +74,10 @@ y_conv=tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)
 # *************** 训练和评估模型 *************** #
 
 # 为训练过程指定最小化误差用的损失函数，即目标类别和预测类别之间的交叉熵
-cross_entropy = -tf.reduce_sum(y_*tf.log(y_conv))
+cross_entropy = -tf.reduce_sum(y_*tf.math.log(y_conv))
 
 # 使用反向传播，利用优化器使损失函数最小化
-train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
+train_step = tf.compat.v1.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 
 # 检测我们的预测是否真实标签匹配(索引位置一样表示匹配)
 # tf.argmax(y_conv,dimension), 返回最大数值的下标 通常和tf.equal()一起使用，计算模型准确度
@@ -84,15 +87,15 @@ correct_prediction = tf.equal(tf.argmax(y_conv,1), tf.argmax(y_,1))
 # 统计测试准确率， 将correct_prediction的布尔值转换为浮点数来代表对、错，并取平均值。
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
 
-saver = tf.train.Saver() # 定义saver
+saver = tf.compat.v1.train.Saver() # 定义saver
 
 # *************** 开始训练模型 *************** #
-with tf.Session() as sess:
-    sess.run(tf.global_variables_initializer())
+with tf.compat.v1.Session() as sess:
+    sess.run(tf.compat.v1.global_variables_initializer())
 
-    for i in range(1000):
+    for i in range(500):
       batch = mnist.train.next_batch(50)
-      if i%100 == 0:
+      if i%50 == 0:
         # 评估模型准确度，此阶段不使用Dropout
         train_accuracy = accuracy.eval(feed_dict={x:batch[0], y_: batch[1], keep_prob: 1.0})
         print("step %d, training accuracy %g"%(i, train_accuracy))
