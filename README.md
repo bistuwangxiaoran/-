@@ -14,5 +14,5 @@ model文件夹内容
 主程序成功运行效果（准确率低）（warning问题待解决）  
 ![image](./图片/6.png)  
 python安装：http://c.biancheng.net/view/4161.html  
-模块安装：pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xxxxx（cmd指令行）（镜像网站加速）（需添加模块包括tensorflow，opencv-python(cv2)，Pillow(PIL)，Pythotk(tkinter)等）
+模块安装：pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xxxxx（cmd指令行）（镜像网站加速）（需添加模块包括tensorflow，opencv-python(cv2)，Pillow(PIL)，Pythotk(tkinter)等）  
 其中功能代码来自：https://www.cnblogs.com/qiuhlee/p/9866222.html （预计应用于tensorflow-1.x.x版本）(修改后代码为tensorflow-2.0.0下运行代码)
