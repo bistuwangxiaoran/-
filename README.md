@@ -3,7 +3,7 @@
 model文件夹需要运行"训练.py"生成  
 初始需求  
 ![image](./图片/7.png)  
-MNIST_data文件夹内容需要下载（http://yann.lecun.com/exdb/mnist/）    
+MNIST_data文件夹内容需要下载（yann.lecun.com/exdb/mnist/）    
 ![image](./图片/3.png)  
 运行效果（warning问题待解决）  
 ![image](./图片/5.png)  
